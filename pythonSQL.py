@@ -12,34 +12,25 @@ st.set_page_config(
 # رابط Web App الخاص بـ Google Apps Script
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# التنسيق الشامل لتصحيح القوائم المنسدلة وإظهار الخطوط
+# التنسيق الشامل - جعل الأكواد من اليمين لليسار وإصلاح القوائم المنسدلة
 st.markdown("""
     <style>
+    /* 1. ضبط الاتجاه العام للتطبيق من اليمين لليسار */
+    .stApp, div, p, label, h1, h2, h3, span {
+        direction: rtl !important;
+        text-align: right !important;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     .stApp { 
         background-color: #0d1117; 
         color: #ffffff !important; 
     }
     
-    /* النصوص والأسئلة وعناوين الخانات باللون الأبيض */
-    html, body, [class*="css"], div, p, label, .stWidgetLabel, .stRadio label, .stSelectbox label, .stNumberInput label, .stTextInput label {
+    /* 2. ضبط عرض الأكواد البرمجية (st.code) من اليمين إلى اليسار */
+    .stCodeBlock, code, pre, .stCodeBlock code, .stCodeBlock pre {
         direction: rtl !important;
         text-align: right !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #ffffff !important;
-        font-weight: 600 !important;
-    }
-    
-    /* العناوين الأساسية */
-    h1, h2, h3 { 
-        color: #58a6ff !important; 
-        border-bottom: 1px solid #30363d; 
-        padding-bottom: 10px; 
-    }
-
-    /* إصلاح لون خلفية والنصوص داخل خانات الأكواد البرمجية (st.code) */
-    .stCodeBlock, code, pre {
-        direction: ltr !important;
-        text-align: left !important;
         font-family: 'Courier New', Courier, monospace !important;
         background-color: #161b22 !important;
         color: #58a6ff !important;
@@ -47,33 +38,56 @@ st.markdown("""
         border-radius: 6px;
     }
 
-    /* إصلاح خلفية والنص في القوائم المنسدلة المنبثقة (Dropdown Popup Fix) */
-    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[role="listbox"], li[role="option"] {
-        background-color: #161b22 !important;
-        color: #ffffff !important;
-    }
-    
-    /* لون خيارات القائمة المنسدلة عند التمرير عليها */
-    li[role="option"]:hover, li[role="option"][aria-selected="true"] {
-        background-color: #21262d !important;
-        color: #58a6ff !important;
+    /* 3. العناوين الأساسية */
+    h1, h2, h3 { 
+        color: #58a6ff !important; 
+        border-bottom: 1px solid #30363d; 
+        padding-bottom: 10px; 
     }
 
-    /* تحسين إضاءة خانات الإدخال والنص بداخلها */
-    input, textarea, [data-baseweb="select"] > div {
+    /* 4. حل مشكلة القوائم المنسدلة (Dropdown/Selectbox) بالكامل */
+    div[data-baseweb="select"] > div {
         background-color: #161b22 !important;
-        color: #ffffff !important;
         border-color: #484f58 !important;
-    }
-
-    div[data-baseweb="input"] input {
-        direction: ltr !important;
-        text-align: left !important;
         color: #ffffff !important;
-        background-color: #161b22 !important;
+        direction: rtl !important;
     }
 
-    /* أزرار التسليم */
+    /* استهداف النافذة المنبثقة من القائمة المنسدلة والخلفية البيضاء */
+    div[data-baseweb="popover"], 
+    div[data-baseweb="menu"], 
+    ul[role="listbox"], 
+    div[role="listbox"] {
+        background-color: #161b22 !important;
+        border: 1px solid #484f58 !important;
+    }
+
+    /* استهداف عناصر القائمة المنسدلة بشكل مباشر */
+    li[role="option"], div[role="option"] {
+        background-color: #161b22 !important;
+        color: #ffffff !important;
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
+    /* إظهار النص عند الحوم/التحديد فوق العنصر */
+    li[role="option"]:hover, 
+    div[role="option"]:hover,
+    li[role="option"][aria-selected="true"] {
+        background-color: #58a6ff !important;
+        color: #0d1117 !important;
+    }
+
+    /* 5. خانات الإدخال النصية والأرقام */
+    input, textarea {
+        background-color: #161b22 !important;
+        color: #ffffff !important;
+        border: 1px solid #484f58 !important;
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
+    /* 6. أزرار التسليم */
     .stButton > button {
         width: 100%; 
         background-color: #238636 !important; 
@@ -88,7 +102,7 @@ st.markdown("""
         box-shadow: 0 0 10px #2ea043; 
     }
 
-    /* بطاقات التحدي */
+    /* 7. بطاقات التحدي */
     .challenge-card { 
         background-color: #161b22; 
         padding: 20px; 
