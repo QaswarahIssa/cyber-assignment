@@ -9,15 +9,18 @@ st.set_page_config(
     layout="centered"
 )
 
-# رابط Web App المستخرج من Google Apps Script
+# رابط Web App الخاص بـ Google Apps Script
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# التنسيق وتعديل ألوان جميع النصوص والأسئلة إلى اللون الأبيض المباشر
+# التنسيق الشامل لتصحيح القوائم المنسدلة وإظهار الخطوط
 st.markdown("""
     <style>
-    .stApp { background-color: #0d1117; color: #ffffff !important; }
+    .stApp { 
+        background-color: #0d1117; 
+        color: #ffffff !important; 
+    }
     
-    /* جعل جميع النصوص والأسئلة وعناوين الإدخال باللون الأبيض والخط العريض */
+    /* النصوص والأسئلة وعناوين الخانات باللون الأبيض */
     html, body, [class*="css"], div, p, label, .stWidgetLabel, .stRadio label, .stSelectbox label, .stNumberInput label, .stTextInput label {
         direction: rtl !important;
         text-align: right !important;
@@ -26,25 +29,48 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* العناوين الأساسية باللون الأزرق المضيء */
+    /* العناوين الأساسية */
     h1, h2, h3 { 
         color: #58a6ff !important; 
         border-bottom: 1px solid #30363d; 
         padding-bottom: 10px; 
     }
 
-    /* الأكواد البرمجية وخانات الإدخال بأسلوب LTR */
-    .stCodeBlock, code, pre, div[data-baseweb="input"] input {
+    /* إصلاح لون خلفية والنصوص داخل خانات الأكواد البرمجية (st.code) */
+    .stCodeBlock, code, pre {
         direction: ltr !important;
         text-align: left !important;
         font-family: 'Courier New', Courier, monospace !important;
+        background-color: #161b22 !important;
+        color: #58a6ff !important;
+        border: 1px solid #30363d !important;
+        border-radius: 6px;
+    }
+
+    /* إصلاح خلفية والنص في القوائم المنسدلة المنبثقة (Dropdown Popup Fix) */
+    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[role="listbox"], li[role="option"] {
+        background-color: #161b22 !important;
+        color: #ffffff !important;
+    }
+    
+    /* لون خيارات القائمة المنسدلة عند التمرير عليها */
+    li[role="option"]:hover, li[role="option"][aria-selected="true"] {
+        background-color: #21262d !important;
+        color: #58a6ff !important;
     }
 
     /* تحسين إضاءة خانات الإدخال والنص بداخلها */
-    .stTextInput > div > div > input, .stSelectbox > div > div, .stNumberInput > div > div > input {
+    input, textarea, [data-baseweb="select"] > div {
         background-color: #161b22 !important;
         color: #ffffff !important;
-        border: 1px solid #484f58 !important;
+        border-color: #484f58 !important;
+    }
+
+    div[data-baseweb="input"] input {
+        direction: ltr !important;
+        text-align: left !important;
+        color: #ffffff !important;
+        background-color: #161b22 !important;
     }
 
     /* أزرار التسليم */
@@ -190,39 +216,50 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 st.divider()
 
-# زر التسليم
+# زر التسليم والحساب المئوي
 if st.button("تأكيد وتسليم التحدي 🚀"):
     if not student_name.strip():
         st.error("⚠️ يرجى كتابة اسمك أولاً لتأكيد التسليم!")
     else:
-        score = 0
-        if q1_input == "admin' OR '1'='1":
-            score += 1
-        if q2_input == "SYSTEM_LOCKED":
-            score += 1
-        if q3_input == 20:
-            score += 1
-        if q4_input.strip().upper() == "HACK":
-            score += 1
-        if q5_input == "Restricted Access":
-            score += 1
-        if q6_input == "SELECT COUNT(*) FROM logs WHERE username = 'user1' AND status = 'failed';":
-            score += 1
-        if "يوفر في حجم البيانات المقولة" in q7_input:
-            score += 1
-        if q8_input.strip() == "11111111":
-            score += 1
+        total_questions = 8
+        correct_answers = 0
 
+        # حساب عدد الإجابات الصحيحة
+        if q1_input == "admin' OR '1'='1":
+            correct_answers += 1
+        if q2_input == "SYSTEM_LOCKED":
+            correct_answers += 1
+        if q3_input == 20:
+            correct_answers += 1
+        if q4_input.strip().upper() == "HACK":
+            correct_answers += 1
+        if q5_input == "Restricted Access":
+            correct_answers += 1
+        if q6_input == "SELECT COUNT(*) FROM logs WHERE username = 'user1' AND status = 'failed';":
+            correct_answers += 1
+        if "يوفر في حجم البيانات المقولة" in q7_input:
+            correct_answers += 1
+        if q8_input.strip() == "11111111":
+            correct_answers += 1
+
+        # حساب النتيجة من 100
+        final_percentage = (correct_answers / total_questions) * 100
+
+        # تجهيز البيانات للإرسال إلى Google Sheets
         payload = {
             "student_name": student_name,
-            "score": f"{score}/8",
+            "score": f"{final_percentage:.1f}% ({correct_answers}/{total_questions})",
             "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
 
         try:
             res = requests.post(WEB_APP_URL, json=payload)
             st.balloons()
-            st.success(f"🎉 تم تسليم النتيجة وإرسالها إلى ملف Google Sheets بنجاح يا {student_name}!")
-            st.markdown(f"### 📊 درجتك المستحقة: `{score} / 8`")
+            st.success(f"🎉 تم تسليم النتيجة بنجاح يا {student_name}!")
+            st.markdown(f"""
+            ### 📊 تفاصيل النتيجة:
+            * **عدد الأسئلة المجاب عليها بشكل صحيح:** `{correct_answers}` من أصل `{total_questions}` أسئلة.
+            * **الدرجة النهائية:** `{final_percentage:.1f} / 100`
+            """)
         except Exception as e:
             st.error(f"تعذر الاتصال بـ Google Sheets: {e}")
