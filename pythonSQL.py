@@ -12,35 +12,54 @@ st.set_page_config(
 # رابط Web App الخاص بـ Google Apps Script
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# تنسيقات CSS آمنة وبسيطة تضمن وضوح الخطوات وعدم تعطيل الكود
+# التنسيقات: خلفية سوداء بالكامل + اتجاه RTL للنصوص
 st.markdown("""
     <style>
-    /* توضيح نصوص الأسئلة والعناوين وجعلها بيضاء وواضحة */
-    .stSelectbox label, .stTextInput label, .stNumberInput label, .stRadio label, p {
-        color: #FFFFFF !important;
-        font-weight: bold !important;
-        font-size: 1.05rem !important;
+    /* 1. جعل خلفية التطبيق سوداء بالكامل واتجاه الصفحة من اليمين لليسار */
+    .stApp, [data-testid="stAppViewContainer"] { 
+        background-color: #000000 !important; 
+        color: #ffffff !important; 
+        direction: rtl !important;
+        text-align: right !important;
     }
 
-    /* جعل صناديق الأكواد البرمجية تبدأ من اليسار لليمين LTR بصورة صحيحة */
+    /* 2. ضبط عناوين الأسئلة والنصوص باللون الأبيض الناصع والواضح */
+    p, span, label, div, .stWidgetLabel, .stRadio label, .stSelectbox label, .stTextInput label, .stNumberInput label {
+        color: #ffffff !important;
+        font-weight: bold !important;
+        font-size: 1.05rem !important;
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
+    /* 3. إبقاء الأكواد البرمجية فقط من اليسار إلى اليمين LTR بخلفية داكنة مناسبة */
     div[data-testid="stCodeBlock"] {
         direction: ltr !important;
         text-align: left !important;
     }
     
-    div[data-testid="stCodeBlock"] code {
+    div[data-testid="stCodeBlock"] code, pre {
         direction: ltr !important;
         text-align: left !important;
+        background-color: #111111 !important;
+        color: #38bdf8 !important;
     }
 
-    /* صندوق تنبيه موعد التسليم */
+    /* 4. تصميم صندوق موعد التسليم بخلفية داكنة متناسقة */
     .deadline-card {
-        background-color: #1e293b;
+        background-color: #111827;
         border-right: 4px solid #3b82f6;
         padding: 14px;
         border-radius: 8px;
         margin: 15px 0;
-        color: #f8fafc;
+        color: #ffffff !important;
+    }
+
+    /* 5. ضبط ألوان خانات الإدخال والقوائم لتناسب الخلفية السوداء */
+    input, div[data-baseweb="select"] > div {
+        background-color: #111111 !important;
+        color: #ffffff !important;
+        border-color: #333333 !important;
     }
     </style>
 """, unsafe_allow_html=True)
