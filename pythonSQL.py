@@ -4,7 +4,7 @@ from datetime import datetime
 
 # إعدادات الصفحة
 st.set_page_config(
-    page_title="تحدي الأمن والبرمجة المتقدم 🛡️",
+    page_title="التحدي 🛡️",
     page_icon="⚔️",
     layout="centered"
 )
@@ -113,7 +113,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡️ التحدي التفاعلي: الأمن والبرمجة")
+st.title("🛡️ التحدي التفاعلي")
 st.write("قم بتحليل السيناريوهات الأمنية والبرمجية أدناه، وأدخل الإجابات الصحيحة لتجاوز النظام.")
 
 st.divider()
