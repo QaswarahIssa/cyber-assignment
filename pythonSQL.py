@@ -12,94 +12,33 @@ st.set_page_config(
 # رابط Web App الخاص بـ Google Apps Script
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# التنسيق الشامل لتعديل الألوان وتوجيه الأكواد
+# تحسين وضوح الخطوط المحددة فقط وضبط اتجاه الكود
 st.markdown("""
     <style>
-    /* 1. اتجاه التطبيق الأساسي RTL */
-    .stApp { 
-        background-color: #0d1117; 
-        color: #ffffff !important; 
-        direction: rtl;
-    }
-
-    /* 2. تحويل جميع النصوص وعناوين الأسئلة (Labels) للون الأبيض الناصع والصريح */
-    div[data-testid="stWidgetLabel"] p, 
-    label, 
-    .stWidgetLabel, 
+    /* 1. جعل عناوين الأسئلة والخيارات واضحة جداً ومقروءة */
+    div[data-testid="stWidgetLabel"] label, 
+    div[data-testid="stWidgetLabel"] p,
+    .stRadio label, 
     .stSelectbox label, 
     .stTextInput label, 
-    .stNumberInput label, 
-    .stRadio label,
-    p, span {
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        font-size: 1.1rem !important;
+    .stNumberInput label {
+        color: #e6edf3 !important;
+        font-weight: 600 !important;
+        font-size: 1.05rem !important;
         opacity: 1 !important;
-        direction: rtl !important;
-        text-align: right !important;
-    }
-    
-    /* 3. العناوين الرئيسية والفرعية */
-    h1, h2, h3, .stSubheader { 
-        color: #58a6ff !important; 
-        padding-bottom: 5px; 
     }
 
-    /* 4. إصلاح اتجاه الأكواد البرمجية بالكامل لتكون من اليسار لليمين LTR */
-    div[data-testid="stCodeBlock"], 
-    div[data-testid="stCodeBlock"] * {
+    /* 2. ضبط اتجاه الأكواد البرمجية لتكون من اليسار إلى اليمين LTR وبخط واضح */
+    div[data-testid="stCodeBlock"] pre, 
+    div[data-testid="stCodeBlock"] code {
         direction: ltr !important;
         text-align: left !important;
+        font-family: monospace !important;
     }
 
-    .stCodeBlock code, pre {
+    /* 3. إزالة التغليف الفائض من عناصر الأكواد */
+    div[data-testid="stCodeBlock"] {
         direction: ltr !important;
-        text-align: left !important;
-        font-family: 'Courier New', Courier, monospace !important;
-        background-color: #161b22 !important;
-        border: 1px solid #30363d !important;
-        border-radius: 6px;
-    }
-
-    /* 5. خط أبيض فاصل بين الأسئلة */
-    hr {
-        border: none !important;
-        border-top: 2px solid #ffffff !important;
-        margin: 25px 0 !important;
-        opacity: 0.8;
-    }
-
-    /* 6. إعدادات الخانات والقوائم المنسدلة */
-    div[data-baseweb="select"] > div, input, textarea {
-        background-color: #161b22 !important;
-        color: #ffffff !important;
-        border-color: #484f58 !important;
-    }
-
-    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[role="listbox"], li[role="option"] {
-        background-color: #161b22 !important;
-        color: #ffffff !important;
-    }
-
-    li[role="option"]:hover, li[role="option"][aria-selected="true"] {
-        background-color: #58a6ff !important;
-        color: #0d1117 !important;
-    }
-
-    /* 7. زر التسليم */
-    .stButton > button {
-        width: 100%; 
-        background-color: #238636 !important; 
-        color: #ffffff !important;
-        border: none !important; 
-        font-weight: bold; 
-        font-size: 1.2rem;
-        padding: 10px 20px; 
-        border-radius: 6px;
-    }
-    .stButton > button:hover { 
-        background-color: #2ea043 !important; 
-        box-shadow: 0 0 10px #2ea043; 
     }
     </style>
 """, unsafe_allow_html=True)
@@ -108,11 +47,11 @@ st.markdown("""
 st.title("🛡️ التحدي التفاعلي")
 st.write("قم بتحليل السيناريوهات الأمنية والبرمجية أدناه، وأدخل الإجابات الصحيحة لتجاوز النظام.")
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 student_name = st.text_input("أدخل اسمك الثلاثي لتسجيل النتيجة:")
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 1 -----------------
 st.subheader("🚩 التحدي 1: تجاوز نظام الحماية عبر SQL Injection")
@@ -123,7 +62,7 @@ q1_input = st.selectbox(
     ["اختر الإجابة...", "admin", "admin' OR '1'='1", "admin'; DROP TABLE users; --", "admin' AND '1'='2"]
 )
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 2 -----------------
 st.subheader("🚩 التحدي 2: تتبع كود حظر المحاولات بـ Python")
@@ -146,7 +85,7 @@ q2_input = st.selectbox(
     ["اختر الإجابة...", "Unlocked", "SYSTEM_LOCKED", "Unlocked وتليها SYSTEM_LOCKED", "لن يطبع شيء"]
 )
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 3 -----------------
 st.subheader("🚩 التحدي 3: تحليل الذاكرة والنظام الثنائي")
@@ -154,7 +93,7 @@ st.write("في فحص للذاكرة، تم العثور على قيمة ثنا�
 st.code("00010100", language="text")
 q3_input = st.number_input("ما هي القيمة المكافئة لها بالنظام العشري (Decimal)؟", min_value=0, max_value=255, value=0)
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 4 -----------------
 st.subheader("🚩 التحدي 4: فك تشفير البيانات السداسية العشرية")
@@ -162,7 +101,7 @@ st.write("تم اعتراض حزمة بيانات تحتوي على الحروف
 st.code("48 41 43 4b", language="hex")
 q4_input = st.text_input("اعتماداً على جدول ASCII، ما هي الكلمة الإنجليزية المكونة لهذا النص؟ (اكتب بالـ Capital)")
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 5 -----------------
 st.subheader("🚩 التحدي 5: تقييم الصلاحيات بالأمر الشرطي")
@@ -181,7 +120,7 @@ q5_input = st.selectbox(
     ["اختر الإجابة...", "Full Access", "Restricted Access", "No Access"]
 )
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 6 -----------------
 st.subheader("🚩 التحدي 6: استعلام تحليل البيانات بـ SQL")
@@ -197,7 +136,7 @@ q6_input = st.selectbox(
     ]
 )
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 7 -----------------
 st.subheader("🚩 التحدي 7: تمثيل ترميز UTF-8")
@@ -211,14 +150,14 @@ q7_input = st.radio(
     ]
 )
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # ----------------- التحدي 8 -----------------
 st.subheader("🚩 التحدي 8: شفرة الألوان Hex")
 st.write("يمثل اللون الأخضر الصافي بالنظام السداسي العشرية بالصيغة `#00FF00`.")
 q8_input = st.text_input("ما هي القيمة الثنائية (Binary) المكافئة لقيمة الجزء الخاص بالأخضر (FF)؟")
 
-st.markdown("<hr>", unsafe_allow_html=True)
+st.markdown("---")
 
 # زر التسليم والحساب المئوي
 if st.button("تأكيد وتسليم التحدي 🚀"):
