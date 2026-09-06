@@ -4,7 +4,7 @@ from datetime import datetime
 
 # إعدادات الصفحة
 st.set_page_config(
-    page_title="تحدي الأمن والبرمجة المتقدم 🛡️",
+    page_title="التحدي  🛡️",
     page_icon="⚔️",
     layout="centered"
 )
@@ -12,70 +12,94 @@ st.set_page_config(
 # رابط Web App الخاص بـ Google Apps Script
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# التنسيق الشامل مع تعديل لون الخط الرمادي ليصبح أبيض وبارز جداً
+# التنسيق الشامل - جعل الأكواد من اليمين لليسار وإصلاح القوائم المنسدلة
 st.markdown("""
     <style>
-    /* 1. ضبط اتجاه التطبيق وخلفية سوداء بالكامل */
-    .stApp, [data-testid="stAppViewContainer"] {
-        background-color: #0d1117 !important; 
+    /* 1. ضبط الاتجاه العام للتطبيق من اليمين لليسار */
+    .stApp, div, p, label, h1, h2, h3, span {
         direction: rtl !important;
         text-align: right !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* 2. تحويل جميع النصوص الرمادية والأوصاف والفرعيات إلى الأبيض الناصع */
-    .stApp p, .stApp span, .stApp label, .stApp div, .stWidgetLabel, 
-    [data-testid="stMarkdownContainer"] p, .stCaption {
-        color: #FFFFFF !important;
-        opacity: 1 !important;
-        font-weight: 500;
+    .stApp { 
+        background-color: #0d1117; 
+        color: #ffffff !important; 
+    }
+    
+    /* 2. ضبط عرض الأكواد البرمجية (st.code) من اليمين إلى اليسار */
+    .stCodeBlock, code, pre, .stCodeBlock code, .stCodeBlock pre {
+        direction: rtl !important;
+        text-align: right !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        background-color: #161b22 !important;
+        color: #58a6ff !important;
+        border: 1px solid #30363d !important;
+        border-radius: 6px;
     }
 
-    /* 3. تعديل عناوين الأسئلة والبطاقات لتبدو باللون الأزرق الفاتح المضيء */
-    h1, h2, h3, .stSubheader { 
+    /* 3. العناوين الأساسية */
+    h1, h2, h3 { 
         color: #58a6ff !important; 
         border-bottom: 1px solid #30363d; 
         padding-bottom: 10px; 
     }
 
-    /* 4. ضبط الأكواد البرمجية لتكون واضحة وباتجاه اليسار لليمين LTR */
-    div[data-testid="stCodeBlock"], code, pre {
-        direction: ltr !important;
-        text-align: left !important;
-        font-family: 'Courier New', Courier, monospace !important;
-        background-color: #161b22 !important;
-        color: #79c0ff !important;
-        border: 1px solid #30363d !important;
-        border-radius: 6px;
-    }
-
-    /* 5. إصلاح القوائم المنسدلة والرموز الرمادية بداخلها */
-    div[data-baseweb="select"] > div, div[data-baseweb="select"] span {
+    /* 4. حل مشكلة القوائم المنسدلة (Dropdown/Selectbox) بالكامل */
+    div[data-baseweb="select"] > div {
         background-color: #161b22 !important;
         border-color: #484f58 !important;
         color: #ffffff !important;
+        direction: rtl !important;
     }
 
-    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[role="listbox"] {
+    /* استهداف النافذة المنبثقة من القائمة المنسدلة والخلفية البيضاء */
+    div[data-baseweb="popover"], 
+    div[data-baseweb="menu"], 
+    ul[role="listbox"], 
+    div[role="listbox"] {
         background-color: #161b22 !important;
         border: 1px solid #484f58 !important;
     }
 
+    /* استهداف عناصر القائمة المنسدلة بشكل مباشر */
     li[role="option"], div[role="option"] {
         background-color: #161b22 !important;
         color: #ffffff !important;
+        direction: rtl !important;
+        text-align: right !important;
     }
 
-    li[role="option"]:hover, div[role="option"]:hover {
+    /* إظهار النص عند الحوم/التحديد فوق العنصر */
+    li[role="option"]:hover, 
+    div[role="option"]:hover,
+    li[role="option"][aria-selected="true"] {
         background-color: #58a6ff !important;
         color: #0d1117 !important;
     }
 
-    /* 6. تعديل ألوان الإدخال النصي والأرقام */
+    /* 5. خانات الإدخال النصية والأرقام */
     input, textarea {
         background-color: #161b22 !important;
         color: #ffffff !important;
         border: 1px solid #484f58 !important;
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
+    /* 6. أزرار التسليم */
+    .stButton > button {
+        width: 100%; 
+        background-color: #238636 !important; 
+        color: #ffffff !important;
+        border: none !important; 
+        font-weight: bold; 
+        padding: 10px 20px; 
+        border-radius: 6px;
+    }
+    .stButton > button:hover { 
+        background-color: #2ea043 !important; 
+        box-shadow: 0 0 10px #2ea043; 
     }
 
     /* 7. بطاقات التحدي */
@@ -86,32 +110,15 @@ st.markdown("""
         border: 1px solid #30363d; 
         margin-bottom: 20px; 
     }
-    
-    /* 8. صندوق موعد التسليم */
-    .deadline-card {
-        background-color: #1c2128;
-        border-right: 4px solid #58a6ff;
-        padding: 12px 16px;
-        border-radius: 6px;
-        margin: 15px 0;
-        color: #ffffff !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡️ التحدي التفاعلي: الأمن والبرمجة")
+st.title("🛡️ التحدي التفاعلي")
 st.write("قم بتحليل السيناريوهات الأمنية والبرمجية أدناه، وأدخل الإجابات الصحيحة لتجاوز النظام.")
 
 st.divider()
 
 student_name = st.text_input("أدخل اسمك الثلاثي لتسجيل النتيجة:")
-
-# تنبيه موعد التسليم تحت خانة الاسم
-st.markdown("""
-    <div class="deadline-card">
-        ⏳ <b>تنويه هام:</b> يرجى العلم أن آخر موعد لتسليم الإجابات واحتساب النتيجة هو <b>12 أيلول 2026</b>. بالتوفيق للجميع! 🚀
-    </div>
-""", unsafe_allow_html=True)
 
 st.divider()
 
@@ -223,14 +230,15 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 st.divider()
 
-# زر التسليم
-if st.button("تأكيد وتسليم التحدي 🚀", type="primary", use_container_width=True):
+# زر التسليم والحساب المئوي
+if st.button("تأكيد وتسليم التحدي 🚀"):
     if not student_name.strip():
         st.error("⚠️ يرجى كتابة اسمك أولاً لتأكيد التسليم!")
     else:
         total_questions = 8
         correct_answers = 0
 
+        # حساب عدد الإجابات الصحيحة
         if q1_input == "admin' OR '1'='1":
             correct_answers += 1
         if q2_input == "SYSTEM_LOCKED":
@@ -248,8 +256,10 @@ if st.button("تأكيد وتسليم التحدي 🚀", type="primary", use_co
         if q8_input.strip() == "11111111":
             correct_answers += 1
 
+        # حساب النتيجة من 100
         final_percentage = (correct_answers / total_questions) * 100
 
+        # تجهيز البيانات للإرسال إلى Google Sheets
         payload = {
             "student_name": student_name,
             "score": f"{final_percentage:.1f}% ({correct_answers}/{total_questions})",
@@ -262,8 +272,8 @@ if st.button("تأكيد وتسليم التحدي 🚀", type="primary", use_co
             st.success(f"🎉 تم تسليم النتيجة بنجاح يا {student_name}!")
             st.markdown(f"""
             ### 📊 تفاصيل النتيجة:
-            * **عدد الأسئلة الصحيحة:** `{correct_answers}` من أصل `{total_questions}`
-            * **الدرجة النهائية:** `{final_percentage:.1f}%`
+            * **عدد الأسئلة المجاب عليها بشكل صحيح:** `{correct_answers}` من أصل `{total_questions}` أسئلة.
+            * **الدرجة النهائية:** `{final_percentage:.1f} / 100`
             """)
         except Exception as e:
             st.error(f"تعذر الاتصال بـ Google Sheets: {e}")
