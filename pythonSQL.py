@@ -12,32 +12,64 @@ st.set_page_config(
 # رابط Web App المستخرج من Google Apps Script
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# التنسيق بأسلوب داكن متكامل (Dark Mode + RTL/LTR)
+# التنسيق وتعديل ألوان جميع النصوص والأسئلة إلى اللون الأبيض المباشر
 st.markdown("""
     <style>
-    .stApp { background-color: #0d1117; color: #c9d1d9; }
-    html, body, [class*="css"], div, h1, h2, h3, h4, h5, h6, p, label, .stRadio, .stSelectbox {
+    .stApp { background-color: #0d1117; color: #ffffff !important; }
+    
+    /* جعل جميع النصوص والأسئلة وعناوين الإدخال باللون الأبيض والخط العريض */
+    html, body, [class*="css"], div, p, label, .stWidgetLabel, .stRadio label, .stSelectbox label, .stNumberInput label, .stTextInput label {
         direction: rtl !important;
         text-align: right !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ffffff !important;
+        font-weight: 600 !important;
     }
-    h1, h2, h3 { color: #58a6ff !important; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+    
+    /* العناوين الأساسية باللون الأزرق المضيء */
+    h1, h2, h3 { 
+        color: #58a6ff !important; 
+        border-bottom: 1px solid #30363d; 
+        padding-bottom: 10px; 
+    }
+
+    /* الأكواد البرمجية وخانات الإدخال بأسلوب LTR */
     .stCodeBlock, code, pre, div[data-baseweb="input"] input {
         direction: ltr !important;
         text-align: left !important;
         font-family: 'Courier New', Courier, monospace !important;
     }
-    .stTextInput > div > div > input, .stSelectbox > div > div {
+
+    /* تحسين إضاءة خانات الإدخال والنص بداخلها */
+    .stTextInput > div > div > input, .stSelectbox > div > div, .stNumberInput > div > div > input {
         background-color: #161b22 !important;
-        color: #3fb950 !important;
-        border: 1px solid #30363d !important;
+        color: #ffffff !important;
+        border: 1px solid #484f58 !important;
     }
+
+    /* أزرار التسليم */
     .stButton > button {
-        width: 100%; background-color: #238636 !important; color: #ffffff !important;
-        border: none !important; font-weight: bold; padding: 10px 20px; border-radius: 6px;
+        width: 100%; 
+        background-color: #238636 !important; 
+        color: #ffffff !important;
+        border: none !important; 
+        font-weight: bold; 
+        padding: 10px 20px; 
+        border-radius: 6px;
     }
-    .stButton > button:hover { background-color: #2ea043 !important; box-shadow: 0 0 10px #2ea043; }
-    .challenge-card { background-color: #161b22; padding: 20px; border-radius: 8px; border: 1px solid #30363d; margin-bottom: 20px; }
+    .stButton > button:hover { 
+        background-color: #2ea043 !important; 
+        box-shadow: 0 0 10px #2ea043; 
+    }
+
+    /* بطاقات التحدي */
+    .challenge-card { 
+        background-color: #161b22; 
+        padding: 20px; 
+        border-radius: 8px; 
+        border: 1px solid #30363d; 
+        margin-bottom: 20px; 
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -50,7 +82,7 @@ student_name = st.text_input("أدخل اسمك الثلاثي لتسجيل ال
 
 st.divider()
 
-# ----------------- التحدي 1: ثغرة SQLi -----------------
+# ----------------- التحدي 1 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 1: تجاوز نظام الحماية عبر SQL Injection")
 st.write("حاول مهاجم تسجيل الدخول في نظام عبر الحقل الخاص بـ Username. ما هي القيمة التي إذا أدخلها في الخانة ستجعل شرط الاستعلام دائم الصحة (True) للوصول للحساب دون معرفة كلمة المرور؟")
@@ -61,7 +93,7 @@ q1_input = st.selectbox(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------- التحدي 2: التكرار بـ Python -----------------
+# ----------------- التحدي 2 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 2: تتبع كود حظر المحاولات بـ Python")
 code_q2 = """lockout = False
@@ -84,7 +116,7 @@ q2_input = st.selectbox(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------- التحدي 3: النظام الثنائي -----------------
+# ----------------- التحدي 3 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 3: تحليل الذاكرة والنظام الثنائي")
 st.write("في فحص للذاكرة، تم العثور على قيمة ثنائية مكونة من 8-bit وهي: `00010100`.")
@@ -92,7 +124,7 @@ st.code("00010100", language="text")
 q3_input = st.number_input("ما هي القيمة المكافئة لها بالنظام العشري (Decimal)؟", min_value=0, max_value=255, value=0)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------- التحدي 4: Hex -----------------
+# ----------------- التحدي 4 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 4: فك تشفير البيانات السداسية العشرية")
 st.write("تم اعتراض حزمة بيانات تحتوي على الحروف المشفّرة بنظام Hex التالية:")
@@ -100,7 +132,7 @@ st.code("48 41 43 4b", language="hex")
 q4_input = st.text_input("اعتماداً على جدول ASCII، ما هي الكلمة الإنجليزية المكونة لهذا النص؟ (اكتب بالـ Capital)")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------- التحدي 5: الشرط بـ Python -----------------
+# ----------------- التحدي 5 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 5: تقييم الصلاحيات بالأمر الشرطي")
 code_q5 = """role = "analyst"
@@ -119,7 +151,7 @@ q5_input = st.selectbox(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------- التحدي 6: SQL Aggregate -----------------
+# ----------------- التحدي 6 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 6: استعلام تحليل البيانات بـ SQL")
 st.write("تريد تحديد عدد جميع المحاولات الفاشلة للمستخدم 'user1' من جدول `logs`.")
@@ -135,7 +167,7 @@ q6_input = st.selectbox(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------- التحدي 7: UTF-8 -----------------
+# ----------------- التحدي 7 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 7: تمثيل ترميز UTF-8")
 q7_input = st.radio(
@@ -149,7 +181,7 @@ q7_input = st.radio(
 )
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ----------------- التحدي 8: ألوان Hex والثنائي -----------------
+# ----------------- التحدي 8 -----------------
 st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
 st.subheader("🚩 التحدي 8: شفرة الألوان Hex")
 st.write("يمثل اللون الأخضر الصافي بالنظام السداسي العشرية بالصيغة `#00FF00`.")
@@ -158,7 +190,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 st.divider()
 
-# زر التسليم والإرسال المباشر لـ Google Sheets
+# زر التسليم
 if st.button("تأكيد وتسليم التحدي 🚀"):
     if not student_name.strip():
         st.error("⚠️ يرجى كتابة اسمك أولاً لتأكيد التسليم!")
