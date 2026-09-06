@@ -2,15 +2,7 @@ import streamlit as st
 import requests
 from datetime import datetime
 
-# إعدادات الصفحة
-st.set_page_config(
-    page_title="التحدي التفاعلي 🛡️",
-    page_icon="⚔️",
-    layout="centered"import streamlit as st
-import requests
-from datetime import datetime
-
-# إعدادات الصفحة
+# إعدادات الصفحة الأساسية
 st.set_page_config(
     page_title="التحدي التفاعلي 🛡️",
     page_icon="⚔️",
@@ -20,54 +12,35 @@ st.set_page_config(
 # رابط Web App الخاص بـ Google Apps Script
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# التنسيق الشامل
+# تنسيقات CSS آمنة وبسيطة تضمن وضوح الخطوات وعدم تعطيل الكود
 st.markdown("""
     <style>
-    /* 1. الخلفية السوداء واتجاه النصوص العربية من اليمين لليمين */
-    .stApp { 
-        background-color: #0d1117 !important; 
-        color: #ffffff !important; 
-        direction: rtl !important;
-        text-align: right !important;
+    /* توضيح نصوص الأسئلة والعناوين وجعلها بيضاء وواضحة */
+    .stSelectbox label, .stTextInput label, .stNumberInput label, .stRadio label, p {
+        color: #FFFFFF !important;
+        font-weight: bold !important;
+        font-size: 1.05rem !important;
     }
 
-    /* 2. تحويل جميع النصوص والأسئلة الرمادية إلى الأبيض الناصع والواضح */
-    p, span, label, div, .stWidgetLabel, .stRadio label, .stSelectbox label, .stTextInput label, .stNumberInput label {
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
-    }
-
-    /* 3. ضباط عناوين الأسئلة لتظهر بلون أبيض ناصع جداً */
-    div[data-testid="stWidgetLabel"] p, label[data-testid="stWidgetLabel"] {
-        color: #ffffff !important;
-        font-size: 1.1rem !important;
-    }
-
-    /* 4. الأكواد البرمجية: اتجاه من اليسار لليمين (LTR) بخلفية غامقة ومحاذاة يسار */
-    div[data-testid="stCodeBlock"], pre, code {
+    /* جعل صناديق الأكواد البرمجية تبدأ من اليسار لليمين LTR بصورة صحيحة */
+    div[data-testid="stCodeBlock"] {
         direction: ltr !important;
         text-align: left !important;
-        font-family: 'Courier New', Courier, monospace !important;
-        background-color: #161b22 !important;
-        color: #58a6ff !important;
+    }
+    
+    div[data-testid="stCodeBlock"] code {
+        direction: ltr !important;
+        text-align: left !important;
     }
 
-    /* 5. تصميم صندوق التنبيه الخفيف بموعد التسليم */
-    .deadline-box {
-        background-color: rgba(56, 139, 253, 0.1);
-        border-right: 4px solid #58a6ff;
-        padding: 12px 16px;
-        border-radius: 6px;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        color: #ffffff !important;
-    }
-
-    /* 6. الخط الفاصل */
-    hr {
-        border-top: 1px solid #30363d !important;
-        margin: 25px 0 !important;
+    /* صندوق تنبيه موعد التسليم */
+    .deadline-card {
+        background-color: #1e293b;
+        border-right: 4px solid #3b82f6;
+        padding: 14px;
+        border-radius: 8px;
+        margin: 15px 0;
+        color: #f8fafc;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -76,19 +49,18 @@ st.markdown("""
 st.title("🛡️ التحدي التفاعلي")
 st.write("قم بتحليل السيناريوهات الأمنية والبرمجية أدناه، وأدخل الإجابات الصحيحة لتجاوز النظام.")
 
-st.markdown("---")
+st.divider()
 
-# إدخال الاسم وتنبيه موعد التسليم
+# خانة الاسم وتنويه التسليم
 student_name = st.text_input("أدخل اسمك الثلاثي لتسجيل النتيجة:")
 
-# التنبيه بموعد التسليم مصاغ بطريقة أنيقة
 st.markdown("""
-    <div class="deadline-box">
-        ⏳ <b>تنويه هام:</b> يُرجى العلم أن آخر موعد لتسليم الإجابات واعتماد النتائج هو <b>12 أيلول 2026</b>. بالتوفيق للجميع! 🚀
+    <div class="deadline-card">
+        ⏳ <b>تنويه هام:</b> يرجى العلم أن آخر موعد لتسليم الإجابات واحتساب النتيجة هو <b>12 أيلول 2026</b>. بالتوفيق للجميع! 🚀
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 1 -----------------
 st.subheader("🚩 التحدي 1: تجاوز نظام الحماية عبر SQL Injection")
@@ -99,7 +71,7 @@ q1_input = st.selectbox(
     ["اختر الإجابة...", "admin", "admin' OR '1'='1", "admin'; DROP TABLE users; --", "admin' AND '1'='2"]
 )
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 2 -----------------
 st.subheader("🚩 التحدي 2: تتبع كود حظر المحاولات بـ Python")
@@ -122,7 +94,7 @@ q2_input = st.selectbox(
     ["اختر الإجابة...", "Unlocked", "SYSTEM_LOCKED", "Unlocked وتليها SYSTEM_LOCKED", "لن يطبع شيء"]
 )
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 3 -----------------
 st.subheader("🚩 التحدي 3: تحليل الذاكرة والنظام الثنائي")
@@ -130,7 +102,7 @@ st.write("في فحص للذاكرة، تم العثور على قيمة ثنا�
 st.code("00010100", language="text")
 q3_input = st.number_input("ما هي القيمة المكافئة لها بالنظام العشري (Decimal)؟", min_value=0, max_value=255, value=0)
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 4 -----------------
 st.subheader("🚩 التحدي 4: فك تشفير البيانات السداسية العشرية")
@@ -138,7 +110,7 @@ st.write("تم اعتراض حزمة بيانات تحتوي على الحروف
 st.code("48 41 43 4b", language="hex")
 q4_input = st.text_input("اعتماداً على جدول ASCII، ما هي الكلمة الإنجليزية المكونة لهذا النص؟ (اكتب بالـ Capital)")
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 5 -----------------
 st.subheader("🚩 التحدي 5: تقييم الصلاحيات بالأمر الشرطي")
@@ -157,7 +129,7 @@ q5_input = st.selectbox(
     ["اختر الإجابة...", "Full Access", "Restricted Access", "No Access"]
 )
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 6 -----------------
 st.subheader("🚩 التحدي 6: استعلام تحليل البيانات بـ SQL")
@@ -173,7 +145,7 @@ q6_input = st.selectbox(
     ]
 )
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 7 -----------------
 st.subheader("🚩 التحدي 7: تمثيل ترميز UTF-8")
@@ -187,17 +159,17 @@ q7_input = st.radio(
     ]
 )
 
-st.markdown("---")
+st.divider()
 
 # ----------------- التحدي 8 -----------------
 st.subheader("🚩 التحدي 8: شفرة الألوان Hex")
 st.write("يمثل اللون الأخضر الصافي بالنظام السداسي العشرية بالصيغة `#00FF00`.")
 q8_input = st.text_input("ما هي القيمة الثنائية (Binary) المكافئة لقيمة الجزء الخاص بالأخضر (FF)؟")
 
-st.markdown("---")
+st.divider()
 
-# زر التسليم والحساب المئوي
-if st.button("تأكيد وتسليم التحدي 🚀"):
+# زر التسليم
+if st.button("تأكيد وتسليم التحدي 🚀", type="primary", use_container_width=True):
     if not student_name.strip():
         st.error("⚠️ يرجى كتابة اسمك أولاً لتأكيد التسليم!")
     else:
@@ -235,204 +207,8 @@ if st.button("تأكيد وتسليم التحدي 🚀"):
             st.success(f"🎉 تم تسليم النتيجة بنجاح يا {student_name}!")
             st.markdown(f"""
             ### 📊 تفاصيل النتيجة:
-            * **عدد الأسئلة المجاب عليها بشكل صحيح:** `{correct_answers}` من أصل `{total_questions}` أسئلة.
-            * **الدرجة النهائية:** `{final_percentage:.1f} / 100`
+            * **عدد الأسئلة الصحيحة:** `{correct_answers}` من أصل `{total_questions}`
+            * **الدرجة النهائية:** `{final_percentage:.1f}%`
             """)
         except Exception as e:
-            st.error(f"تعذر الاتصال بـ Google Sheets: {e}")
-)
-
-# رابط Web App الخاص بـ Google Apps Script
-WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
-
-# تحسين وضوح الخطوط المحددة فقط وضبط اتجاه الكود
-st.markdown("""
-    <style>
-    /* 1. جعل عناوين الأسئلة والخيارات واضحة جداً ومقروءة */
-    div[data-testid="stWidgetLabel"] label, 
-    div[data-testid="stWidgetLabel"] p,
-    .stRadio label, 
-    .stSelectbox label, 
-    .stTextInput label, 
-    .stNumberInput label {
-        color: #e6edf3 !important;
-        font-weight: 600 !important;
-        font-size: 1.05rem !important;
-        opacity: 1 !important;
-    }
-
-    /* 2. ضبط اتجاه الأكواد البرمجية لتكون من اليسار إلى اليمين LTR وبخط واضح */
-    div[data-testid="stCodeBlock"] pre, 
-    div[data-testid="stCodeBlock"] code {
-        direction: ltr !important;
-        text-align: left !important;
-        font-family: monospace !important;
-    }
-
-    /* 3. إزالة التغليف الفائض من عناصر الأكواد */
-    div[data-testid="stCodeBlock"] {
-        direction: ltr !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# العنوان
-st.title("🛡️ التحدي التفاعلي")
-st.write("قم بتحليل السيناريوهات الأمنية والبرمجية أدناه، وأدخل الإجابات الصحيحة لتجاوز النظام.")
-
-st.markdown("---")
-
-student_name = st.text_input("أدخل اسمك الثلاثي لتسجيل النتيجة:")
-
-st.markdown("---")
-
-# ----------------- التحدي 1 -----------------
-st.subheader("🚩 التحدي 1: تجاوز نظام الحماية عبر SQL Injection")
-st.write("حاول مهاجم تسجيل الدخول في نظام عبر الحقل الخاص بـ Username. ما هي القيمة التي إذا أدخلها في الخانة ستجعل شرط الاستعلام دائم الصحة (True) للوصول للحساب دون معرفة كلمة المرور؟")
-st.code("SELECT * FROM users WHERE username = 'INPUT' AND status = 'active';", language="sql")
-q1_input = st.selectbox(
-    "اختر المدخل الخبيث المناسب للالتفاف على الفحص:",
-    ["اختر الإجابة...", "admin", "admin' OR '1'='1", "admin'; DROP TABLE users; --", "admin' AND '1'='2"]
-)
-
-st.markdown("---")
-
-# ----------------- التحدي 2 -----------------
-st.subheader("🚩 التحدي 2: تتبع كود حظر المحاولات بـ Python")
-code_q2 = """lockout = False
-attempts = 0
-
-while attempts < 3 and not lockout:
-    pin = input("Enter PIN: ")
-    if pin == "9900":
-        print("Unlocked")
-        break
-    attempts += 1
-
-if attempts == 3:
-    lockout = True
-    print("SYSTEM_LOCKED")"""
-st.code(code_q2, language="python")
-q2_input = st.selectbox(
-    "إذا أدخل المستخدم القيم التالية بالترتيب (1111, 2222, 3333)، ما هي الرسالة النهائية التي ستطبع؟",
-    ["اختر الإجابة...", "Unlocked", "SYSTEM_LOCKED", "Unlocked وتليها SYSTEM_LOCKED", "لن يطبع شيء"]
-)
-
-st.markdown("---")
-
-# ----------------- التحدي 3 -----------------
-st.subheader("🚩 التحدي 3: تحليل الذاكرة والنظام الثنائي")
-st.write("في فحص للذاكرة، تم العثور على قيمة ثنائية مكونة من 8-bit وهي: `00010100`.")
-st.code("00010100", language="text")
-q3_input = st.number_input("ما هي القيمة المكافئة لها بالنظام العشري (Decimal)؟", min_value=0, max_value=255, value=0)
-
-st.markdown("---")
-
-# ----------------- التحدي 4 -----------------
-st.subheader("🚩 التحدي 4: فك تشفير البيانات السداسية العشرية")
-st.write("تم اعتراض حزمة بيانات تحتوي على الحروف المشفّرة بنظام Hex التالية:")
-st.code("48 41 43 4b", language="hex")
-q4_input = st.text_input("اعتماداً على جدول ASCII، ما هي الكلمة الإنجليزية المكونة لهذا النص؟ (اكتب بالـ Capital)")
-
-st.markdown("---")
-
-# ----------------- التحدي 5 -----------------
-st.subheader("🚩 التحدي 5: تقييم الصلاحيات بالأمر الشرطي")
-code_q5 = """role = "analyst"
-clearance = 3
-
-if role == "admin" or clearance >= 5:
-    print("Full Access")
-elif role == "analyst" and clearance >= 3:
-    print("Restricted Access")
-else:
-    print("No Access")"""
-st.code(code_q5, language="python")
-q5_input = st.selectbox(
-    "ما هي المخرجات المتوقعة من هذا التنفيذ؟",
-    ["اختر الإجابة...", "Full Access", "Restricted Access", "No Access"]
-)
-
-st.markdown("---")
-
-# ----------------- التحدي 6 -----------------
-st.subheader("🚩 التحدي 6: استعلام تحليل البيانات بـ SQL")
-st.write("تريد تحديد عدد جميع المحاولات الفاشلة للمستخدم 'user1' من جدول `logs`.")
-q6_input = st.selectbox(
-    "ما هو الاستعلام الصحيح لاسترجاع هذا العدد؟",
-    [
-        "اختر الإجابة...",
-        "SELECT COUNT(*) FROM logs WHERE username = 'user1' AND status = 'failed';",
-        "SELECT SUM(*) FROM logs WHERE username = 'user1';",
-        "SELECT * FROM logs WHERE username = 'user1' SORT BY failed;",
-        "COUNT logs WHERE status = 'failed';"
-    ]
-)
-
-st.markdown("---")
-
-# ----------------- التحدي 7 -----------------
-st.subheader("🚩 التحدي 7: تمثيل ترميز UTF-8")
-q7_input = st.radio(
-    "لماذا يُفضل استخدام ترميز UTF-8 في نقل البيانات عبر الشبكات مقارنةً بـ UTF-32؟",
-    [
-        "اختر الإجابة...",
-        "لأنه يوفر في حجم البيانات المقولة باستخدام حجم متغير (من 1 إلى 4 بايتات) حسب نوع الحرف",
-        "لأنه أسرع في المعالجة دائماً بفضل حجمه الثابت 4 بايتات",
-        "لأنه يستوعب الرموز بينما UTF-32 يقتصر على النصوص فقط"
-    ]
-)
-
-st.markdown("---")
-
-# ----------------- التحدي 8 -----------------
-st.subheader("🚩 التحدي 8: شفرة الألوان Hex")
-st.write("يمثل اللون الأخضر الصافي بالنظام السداسي العشرية بالصيغة `#00FF00`.")
-q8_input = st.text_input("ما هي القيمة الثنائية (Binary) المكافئة لقيمة الجزء الخاص بالأخضر (FF)؟")
-
-st.markdown("---")
-
-# زر التسليم والحساب المئوي
-if st.button("تأكيد وتسليم التحدي 🚀"):
-    if not student_name.strip():
-        st.error("⚠️ يرجى كتابة اسمك أولاً لتأكيد التسليم!")
-    else:
-        total_questions = 8
-        correct_answers = 0
-
-        if q1_input == "admin' OR '1'='1":
-            correct_answers += 1
-        if q2_input == "SYSTEM_LOCKED":
-            correct_answers += 1
-        if q3_input == 20:
-            correct_answers += 1
-        if q4_input.strip().upper() == "HACK":
-            correct_answers += 1
-        if q5_input == "Restricted Access":
-            correct_answers += 1
-        if q6_input == "SELECT COUNT(*) FROM logs WHERE username = 'user1' AND status = 'failed';":
-            correct_answers += 1
-        if "يوفر في حجم البيانات المقولة" in q7_input:
-            correct_answers += 1
-        if q8_input.strip() == "11111111":
-            correct_answers += 1
-
-        final_percentage = (correct_answers / total_questions) * 100
-
-        payload = {
-            "student_name": student_name,
-            "score": f"{final_percentage:.1f}% ({correct_answers}/{total_questions})",
-            "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-
-        try:
-            res = requests.post(WEB_APP_URL, json=payload)
-            st.balloons()
-            st.success(f"🎉 تم تسليم النتيجة بنجاح يا {student_name}!")
-            st.markdown(f"""
-            ### 📊 تفاصيل النتيجة:
-            * **عدد الأسئلة المجاب عليها بشكل صحيح:** `{correct_answers}` من أصل `{total_questions}` أسئلة.
-            * **الدرجة النهائية:** `{final_percentage:.1f} / 100`
-            """)
-        except Exception as e:
-            st.error(f"تعذر الاتصال بـ Google Sheets: {e}")
+            st.error(f"تعذر الاتصال بالخادم: {e}")
