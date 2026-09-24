@@ -1,8 +1,8 @@
 import streamlit as st
 import requests
 
-# رابط جوجل المحدد لربط النتائج
-WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
+# رابط جوجل المحدث الخاص بك
+WEB_APP_URL = "https://script.google.com/macros/s/AKfycbws7Qv6UkPqQ1KlECjSGsBR-X5oDodTFfNxYxNafIYYBLZYYP1kGB9mRukYQPl_nBzpcw/exec"
 
 # إعدادات الصفحة
 st.set_page_config(page_title="تحدي الأمن السيبراني المتقدم", page_icon="🔐", layout="centered")
@@ -201,7 +201,7 @@ if submit_btn:
         else:
             results_details.append("❌ س 10: خطأ (الصحيح: --)")
 
-        # إرسال البيانات لجوجل شيت باستخدام data بدلاً من json لضمان استقبال الاسم بشكل صحيح
+        # إرسال البيانات لجوجل شيت باستخدام data
         try:
             payload = {
                 "name": full_name.strip(),
@@ -222,6 +222,6 @@ if submit_btn:
             st.write(res)
 
         if success_sent:
-            st.success("✅ تم إرسال الاسم والنتيجة إلى لوحة تحكم المعلم بنجاح عبر رابط جوجل!")
+            st.success("✅ تم إرسال الاسم والنتيجة إلى لوحة تحكم المعلم بنجاح عبر رابط جوجل الجديد!")
         else:
             st.warning("⚠️ تم احتساب النتيجة، ولكن تعذر الإرسال التلقائي للرابط حالياً بسبب اتصال الشبكة.")
