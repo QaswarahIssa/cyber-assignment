@@ -45,7 +45,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ترويسة التطبيق
-st.markdown("<h1 style='text-align: center; color: #ff4b4b;'>🔐 تحدي المحقق الرقمي المتقدم (Pre-Security CTF)</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #ff4b4b;'>🔐 تحدي المحقق الرقمي  (Pre-Security CTF)</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;'>أهلاً بك أيها المحقق. يتطلب هذا الاختبار تحليلاً دقيقاً لـ 10 تحديات تقنية. أدخل اسمك الثلاثي واجب عن الأسئلة بحذر.</p>", unsafe_allow_html=True)
 st.markdown("---")
 
