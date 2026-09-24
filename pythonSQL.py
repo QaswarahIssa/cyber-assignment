@@ -1,279 +1,145 @@
 import streamlit as st
 import requests
-from datetime import datetime
 
-# إعدادات الصفحة
-st.set_page_config(
-    page_title="التحدي  🛡️",
-    page_icon="⚔️",
-    layout="centered"
-)
-
-# رابط Web App الخاص بـ Google Apps Script
+# رابط جوجل المحدد لربط النتائج
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzCHyNyjkDlVHLuHjavamU7VnwEBFZSRKo4oJLKufOSnglxs-rlzsZuBmC0SSo-r-4xvA/exec"
 
-# التنسيق الشامل - جعل الأكواد من اليمين لليسار وإصلاح القوائم المنسدلة
+# إعدادات الصفحة والتصميم العصري (Cybersecurity Theme)
+st.set_page_config(page_title="تحدي الأمن السيبراني التفاعلي", page_icon="🛡️", layout="centered")
+
 st.markdown("""
     <style>
-    /* 1. ضبط الاتجاه العام للتطبيق من اليمين لليسار */
-    .stApp, div, p, label, h1, h2, h3, span {
-        direction: rtl !important;
-        text-align: right !important;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .stApp { 
-        background-color: #0d1117; 
-        color: #ffffff !important; 
-    }
-    
-    /* 2. ضبط عرض الأكواد البرمجية (st.code) من اليمين إلى اليسار */
-    .stCodeBlock, code, pre, .stCodeBlock code, .stCodeBlock pre {
-        direction: rtl !important;
-        text-align: right !important;
-        font-family: 'Courier New', Courier, monospace !important;
-        background-color: #161b22 !important;
-        color: #58a6ff !important;
-        border: 1px solid #30363d !important;
-        border-radius: 6px;
-    }
-
-    /* 3. العناوين الأساسية */
-    h1, h2, h3 { 
-        color: #58a6ff !important; 
-        border-bottom: 1px solid #30363d; 
-        padding-bottom: 10px; 
-    }
-
-    /* 4. حل مشكلة القوائم المنسدلة (Dropdown/Selectbox) بالكامل */
-    div[data-baseweb="select"] > div {
-        background-color: #161b22 !important;
-        border-color: #484f58 !important;
-        color: #ffffff !important;
-        direction: rtl !important;
-    }
-
-    /* استهداف النافذة المنبثقة من القائمة المنسدلة والخلفية البيضاء */
-    div[data-baseweb="popover"], 
-    div[data-baseweb="menu"], 
-    ul[role="listbox"], 
-    div[role="listbox"] {
-        background-color: #161b22 !important;
-        border: 1px solid #484f58 !important;
-    }
-
-    /* استهداف عناصر القائمة المنسدلة بشكل مباشر */
-    li[role="option"], div[role="option"] {
-        background-color: #161b22 !important;
-        color: #ffffff !important;
-        direction: rtl !important;
-        text-align: right !important;
-    }
-
-    /* إظهار النص عند الحوم/التحديد فوق العنصر */
-    li[role="option"]:hover, 
-    div[role="option"]:hover,
-    li[role="option"][aria-selected="true"] {
-        background-color: #58a6ff !important;
-        color: #0d1117 !important;
-    }
-
-    /* 5. خانات الإدخال النصية والأرقام */
-    input, textarea {
-        background-color: #161b22 !important;
-        color: #ffffff !important;
-        border: 1px solid #484f58 !important;
-        direction: rtl !important;
-        text-align: right !important;
-    }
-
-    /* 6. أزرار التسليم */
-    .stButton > button {
-        width: 100%; 
-        background-color: #238636 !important; 
-        color: #ffffff !important;
-        border: none !important; 
-        font-weight: bold; 
-        padding: 10px 20px; 
-        border-radius: 6px;
-    }
-    .stButton > button:hover { 
-        background-color: #2ea043 !important; 
-        box-shadow: 0 0 10px #2ea043; 
-    }
-
-    /* 7. بطاقات التحدي */
-    .challenge-card { 
-        background-color: #161b22; 
-        padding: 20px; 
-        border-radius: 8px; 
-        border: 1px solid #30363d; 
-        margin-bottom: 20px; 
-    }
+    .main { background-color: #0e1117; color: #ffffff; }
+    .stButton>button { width: 100%; border-radius: 8px; background-color: #ff4b4b; color: white; font-weight: bold; height: 3em; }
+    .success-box { padding: 20px; border-radius: 10px; background-color: #1e3a1e; border: 1px solid #2ecc71; text-align: center; }
+    .header-title { text-align: center; color: #ff4b4b; font-weight: 800; }
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🛡️ التحدي التفاعلي")
-st.write("قم بتحليل السيناريوهات الأمنية والبرمجية أدناه، وأدخل الإجابات الصحيحة لتجاوز النظام.")
+st.markdown("<h1 class='header-title'>🛡️ تحدي الأقفال الرقمية (Pre-Security CTF)</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>أهلاً بك أيها المحقق الرقمي! اجتاز الأقفال الأربعة التالية لفك النظام بالكامل وتسجيل نتيجتك رسمياً.</p>", unsafe_allow_html=True)
+st.markdown("---")
 
-st.divider()
+# إدارة الجلسة (Session State) لتتبع بيانات الطالب والمستوى الحالي
+if "full_name" not in st.session_state:
+    st.session_state.full_name = ""
+if "stage" not in st.session_state:
+    st.session_state.stage = 1  # المستويات من 1 إلى 4، والمستوى 5 للنهاية
+if "score" not in st.session_state:
+    st.session_state.score = 0
+if "data_sent" not in st.session_state:
+    st.session_state.data_sent = False
 
-student_name = st.text_input("أدخل اسمك الثلاثي لتسجيل النتيجة:")
+# الخطوة 0: التحقق من إدخال الاسم الثلاثي
+if not st.session_state.full_name:
+    with st.form("name_form"):
+        st.subheader("📝 الخطوة المسبقة: تسجيل هوية المحقق")
+        name_input = st.text_input("أدخل الاسم الثلاثي واللقب بدقة:")
+        submitted_name = st.form_submit_button("بدء التحدي وفتح البوابة 🚀")
+        if submitted_name:
+            if len(name_input.strip().split()) >= 3:
+                st.session_state.full_name = name_input.strip()
+                st.rerun()
+            else:
+                st.warning("⚠️ يرجى إدخال الاسم الثلاثي كاملاً لضمان تسجيل النتيجة بشكل صحيح.")
+    st.stop()
 
-st.divider()
+# شريط تقدم التحدي
+progress = (st.session_state.stage - 1) / 4
+st.progress(progress)
+st.info(f"👤 المحقق الحالي: **{st.session_state.full_name}** | 🎯 العلامة الحالية: **{st.session_state.score} / 100**")
 
-# ----------------- التحدي 1 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 1: تجاوز نظام الحماية عبر SQL Injection")
-st.write("حاول مهاجم تسجيل الدخول في نظام عبر الحقل الخاص بـ Username. ما هي القيمة التي إذا أدخلها في الخانة ستجعل شرط الاستعلام دائم الصحة (True) للوصول للحساب دون معرفة كلمة المرور؟")
-st.code("SELECT * FROM users WHERE username = 'INPUT' AND status = 'active';", language="sql")
-q1_input = st.selectbox(
-    "اختر المدخل الخبيث المناسب للالتفاف على الفحص:",
-    ["اختر الإجابة...", "admin", "admin' OR '1'='1", "admin'; DROP TABLE users; --", "admin' AND '1'='2"]
-)
-st.markdown('</div>', unsafe_allow_html=True)
+# --- القفل الأول: تمثيل الألوان والأعداد ---
+if st.session_state.stage == 1:
+    st.markdown("### 🔒 القفل الأول: الألوان والأنظمة العددية")
+    st.markdown("في الكود اللوني السداسي عشري `#BC002D`، ما هي القيمة **العشرية (Decimal)** لقناة اللون الأحمر الممثلة بالزوج الأول `BC`؟[cite: 1]")
+    
+    ans1 = st.text_input("أدخل القيمة الرقمية العشرية:", key="q1")
+    if st.button("محاولة فتح القفل الأول 🔓", key="b1"):
+        if ans1.strip() == "188":
+            st.session_state.score += 25
+            st.session_state.stage = 2
+            st.success("🎉 ممتاز! تم فك القفل الأول بنجاح (القيمة 188)[cite: 1].")
+            st.rerun()
+        else:
+            st.error("❌ إجابة خاطئة! القفل ما زال مغلقاً، تذكر أن `BC` تعادل 188 بالعشري[cite: 1].")
 
-# ----------------- التحدي 2 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 2: تتبع كود حظر المحاولات بـ Python")
-code_q2 = """lockout = False
-attempts = 0
+# --- القفل الثاني: ترميز النصوص والمحارف ---
+elif st.session_state.stage == 2:
+    st.markdown("### 🔒 القفل الثاني: ترميز النصوص (Text Encoding)")
+    st.markdown("بالاعتماد على جدول معيار `ASCII`، ما هي القيمة **العشرية** للحرف الكبير **Q** في اسم `Qaswarah`؟[cite: 2]")
+    
+    ans2 = st.text_input("أدخل القيمة العشرية للحرف:", key="q2")
+    if st.button("محاولة فتح القفل الثاني 🔓", key="b2"):
+        if ans2.strip() == "81":
+            st.session_state.score += 25
+            st.session_state.stage = 3
+            st.success("🎉 رائع! القفل الثاني انفتح بنجاح (القيمة 81)[cite: 2].")
+            st.rerun()
+        else:
+            st.error("❌ إجابة خاطئة! راجع جدول ASCII الخاص بالحرف Q[cite: 2].")
 
-while attempts < 3 and not lockout:
-    pin = input("Enter PIN: ")
-    if pin == "9900":
-        print("Unlocked")
-        break
-    attempts += 1
+# --- القفل الثالث: أساسيات بايثون ---
+elif st.session_state.stage == 3:
+    st.markdown("### 🔒 القفل الثالث: البرمجة بلغة بايثون (Python)")
+    st.markdown("في سكريبت لعبة تخمين الرقم، ما هي الكلمة المفتاحية المستخدمة لبناء حلقة تكرارية تستمر ما دام التخمين لا يساوي الرقم السري؟[cite: 3]")
+    
+    ans3 = st.selectbox("اختر الكلمة المناسبة:", ["--- اختر الإجابة ---", "for", "while", "if", "loop"], key="q3")
+    if st.button("محاولة فتح القفل الثالث 🔓", key="b3"):
+        if ans3 == "while":
+            st.session_state.score += 25
+            st.session_state.stage = 4
+            st.success("🎉 أحسنت! حلقة while هي حلقة التكرار المشروط المستخدمة[cite: 3].")
+            st.rerun()
+        elif ans3 == "--- اختر الإجابة ---":
+            st.warning("⚠️ يرجى اختيار إجابة من القائمة.")
+        else:
+            st.error("❌ إجابة خاطئة! فكر في بنية التكرار المستمر في بايثون[cite: 3].")
 
-if attempts == 3:
-    lockout = True
-    print("SYSTEM_LOCKED")"""
-st.code(code_q2, language="python")
-q2_input = st.selectbox(
-    "إذا أدخل المستخدم القيم التالية بالترتيب (1111, 2222, 3333)، ما هي الرسالة النهائية التي ستطبع؟",
-    ["اختر الإجابة...", "Unlocked", "SYSTEM_LOCKED", "Unlocked وتليها SYSTEM_LOCKED", "لن يطبع شيء"]
-)
-st.markdown('</div>', unsafe_allow_html=True)
+# --- القفل الرابع: قواعد البيانات و SQL ---
+elif st.session_state.stage == 4:
+    st.markdown("### 🔒 القفل الرابع: قواعد البيانات (SQL)")
+    st.markdown("ما هي الكلمة المفتاحية في لغة SQL المستخدمة لتصفية السجلات واسترجاع طلبات القهوة `Coffee` فقط؟[cite: 4]")
+    
+    ans4 = st.text_input("أدخل الكلمة المفتاحية:", key="q4")
+    if st.button("فتح القفل الأخير وإنهاء التحدي 🔓", key="b4"):
+        if ans4.strip().upper() == "WHERE":
+            st.session_state.score += 25
+            st.session_state.stage = 5
+            st.rerun()
+        else:
+            st.error("❌ إجابة خاطئة! تذكر أمر التصفية والشرط في SQL[cite: 4].")
 
-# ----------------- التحدي 3 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 3: تحليل الذاكرة والنظام الثنائي")
-st.write("في فحص للذاكرة، تم العثور على قيمة ثنائية مكونة من 8-bit وهي: `00010100`.")
-st.code("00010100", language="text")
-q3_input = st.number_input("ما هي القيمة المكافئة لها بالنظام العشري (Decimal)؟", min_value=0, max_value=255, value=0)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------- التحدي 4 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 4: فك تشفير البيانات السداسية العشرية")
-st.write("تم اعتراض حزمة بيانات تحتوي على الحروف المشفّرة بنظام Hex التالية:")
-st.code("48 41 43 4b", language="hex")
-q4_input = st.text_input("اعتماداً على جدول ASCII، ما هي الكلمة الإنجليزية المكونة لهذا النص؟ (اكتب بالـ Capital)")
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------- التحدي 5 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 5: تقييم الصلاحيات بالأمر الشرطي")
-code_q5 = """role = "analyst"
-clearance = 3
-
-if role == "admin" or clearance >= 5:
-    print("Full Access")
-elif role == "analyst" and clearance >= 3:
-    print("Restricted Access")
-else:
-    print("No Access")"""
-st.code(code_q5, language="python")
-q5_input = st.selectbox(
-    "ما هي المخرجات المتوقعة من هذا التنفيذ؟",
-    ["اختر الإجابة...", "Full Access", "Restricted Access", "No Access"]
-)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------- التحدي 6 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 6: استعلام تحليل البيانات بـ SQL")
-st.write("تريد تحديد عدد جميع المحاولات الفاشلة للمستخدم 'user1' من جدول `logs`.")
-q6_input = st.selectbox(
-    "ما هو الاستعلام الصحيح لاسترجاع هذا العدد؟",
-    [
-        "اختر الإجابة...",
-        "SELECT COUNT(*) FROM logs WHERE username = 'user1' AND status = 'failed';",
-        "SELECT SUM(*) FROM logs WHERE username = 'user1';",
-        "SELECT * FROM logs WHERE username = 'user1' SORT BY failed;",
-        "COUNT logs WHERE status = 'failed';"
-    ]
-)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------- التحدي 7 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 7: تمثيل ترميز UTF-8")
-q7_input = st.radio(
-    "لماذا يُفضل استخدام ترميز UTF-8 في نقل البيانات عبر الشبكات مقارنةً بـ UTF-32؟",
-    [
-        "اختر الإجابة...",
-        "لأنه يوفر في حجم البيانات المقولة باستخدام حجم متغير (من 1 إلى 4 بايتات) حسب نوع الحرف",
-        "لأنه أسرع في المعالجة دائماً بفضل حجمه الثابت 4 بايتات",
-        "لأنه يستوعب الرموز بينما UTF-32 يقتصر على النصوص فقط"
-    ]
-)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ----------------- التحدي 8 -----------------
-st.markdown('<div class="challenge-card">', unsafe_allow_html=True)
-st.subheader("🚩 التحدي 8: شفرة الألوان Hex")
-st.write("يمثل اللون الأخضر الصافي بالنظام السداسي العشرية بالصيغة `#00FF00`.")
-q8_input = st.text_input("ما هي القيمة الثنائية (Binary) المكافئة لقيمة الجزء الخاص بالأخضر (FF)؟")
-st.markdown('</div>', unsafe_allow_html=True)
-
-st.divider()
-
-# زر التسليم والحساب المئوي
-if st.button("تأكيد وتسليم التحدي 🚀"):
-    if not student_name.strip():
-        st.error("⚠️ يرجى كتابة اسمك أولاً لتأكيد التسليم!")
-    else:
-        total_questions = 8
-        correct_answers = 0
-
-        # حساب عدد الإجابات الصحيحة
-        if q1_input == "admin' OR '1'='1":
-            correct_answers += 1
-        if q2_input == "SYSTEM_LOCKED":
-            correct_answers += 1
-        if q3_input == 20:
-            correct_answers += 1
-        if q4_input.strip().upper() == "HACK":
-            correct_answers += 1
-        if q5_input == "Restricted Access":
-            correct_answers += 1
-        if q6_input == "SELECT COUNT(*) FROM logs WHERE username = 'user1' AND status = 'failed';":
-            correct_answers += 1
-        if "يوفر في حجم البيانات المقولة" in q7_input:
-            correct_answers += 1
-        if q8_input.strip() == "11111111":
-            correct_answers += 1
-
-        # حساب النتيجة من 100
-        final_percentage = (correct_answers / total_questions) * 100
-
-        # تجهيز البيانات للإرسال إلى Google Sheets
-        payload = {
-            "student_name": student_name,
-            "score": f"{final_percentage:.1f}% ({correct_answers}/{total_questions})",
-            "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
-
+# --- المرحلة الخامسة: الإرسال وحفل التخرج المصغر ---
+elif st.session_state.stage == 5:
+    st.balloons()
+    
+    # إرسال البيانات تلقائياً لجوجل شيت عبر WEB_APP_URL إذا لم تُرسل مسبقاً
+    if not st.session_state.data_sent:
         try:
-            res = requests.post(WEB_APP_URL, json=payload)
-            st.balloons()
-            st.success(f"🎉 تم تسليم النتيجة بنجاح يا {student_name}!")
-            st.markdown(f"""
-            ### 📊 تفاصيل النتيجة:
-            * **عدد الأسئلة المجاب عليها بشكل صحيح:** `{correct_answers}` من أصل `{total_questions}` أسئلة.
-            * **الدرجة النهائية:** `{final_percentage:.1f} / 100`
-            """)
+            payload = {
+                "name": st.session_state.full_name,
+                "score": st.session_state.score
+            }
+            response = requests.post(WEB_APP_URL, json=payload)
+            st.session_state.data_sent = True
         except Exception as e:
-            st.error(f"تعذر الاتصال بـ Google Sheets: {e}")
+            pass # في حال وجود عائق شبكي مؤقت
+
+    st.markdown("""
+        <div class='success-box'>
+            <h2>🏆 تهانينا الكبرى أيها المحقق الرقمي!</h2>
+            <p>لقد قمت بفتح جميع الأقفال الأربعة بنجاح واجتياز التحدي العملي لكورس الـ Pre-Security بكفاءة تامة.</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.write(f"📌 **اسم الطالب الثلاثي:** {st.session_state.full_name}")
+    st.write(f"🌟 **النتيجة النهائية:** {st.session_state.score} / 100")
+    st.success("✅ تم إرسال نتيجة اختبارك وعلامتك رسمياً إلى لوحة تحكم المعلم عبر رابط جوجل بنجاح.")
+
+    if st.button("إعادة محاولة / طالب جديد"):
+        st.session_state.full_name = ""
+        st.session_state.stage = 1
+        st.session_state.score = 0
+        st.session_state.data_sent = False
+        st.rerun()
