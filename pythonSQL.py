@@ -5,7 +5,7 @@ import requests
 WEB_APP_URL = "https://script.google.com/macros/s/AKfycbws7Qv6UkPqQ1KlECjSGsBR-X5oDodTFfNxYxNafIYYBLZYYP1kGB9mRukYQPl_nBzpcw/exec"
 
 # إعدادات الصفحة
-st.set_page_config(page_title="تحدي الأمن السيبراني المتقدم", page_icon="🔐", layout="centered")
+st.set_page_config(page_title="تحدي الأمن السيبراني ", page_icon="🔐", layout="centered")
 
 # تنسيق CSS لضمان محاذاة الواجهة من اليمين لليسار، والأكواد من اليسار لليمين
 st.markdown("""
