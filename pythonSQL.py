@@ -140,83 +140,74 @@ if submit_btn:
         score = 0
         results_details = []
 
-        # 1. Hex 2F -> 47
+        # تصحيح الأسئلة
         if q1.strip() == "47":
             score += 10
             results_details.append("✅ س 1: صحيح (47)")
         else:
             results_details.append("❌ س 1: خطأ (الصحيح: 47)")
 
-        # 2. #00FF00 -> الأخضر 255 (ثنائي: 8 بتات كلها 1) -> 8
         if q2.strip() == "8":
             score += 10
             results_details.append("✅ س 2: صحيح (8 بتات)")
         else:
             results_details.append("❌ س 2: خطأ (الصحيح: 8)")
 
-        # 3. 12 AND 5 -> (1101 & 0101 = 0100 = 4)
         if q3.strip() == "4":
             score += 10
             results_details.append("✅ س 3: صحيح (4)")
         else:
             results_details.append("❌ س 3: خطأ (الصحيح: 4)")
 
-        # 4. A=65, a=97
         if q4.strip() == "97":
             score += 10
             results_details.append("✅ س 4: صحيح (97)")
         else:
             results_details.append("❌ س 4: خطأ (الصحيح: 97)")
 
-        # 5. Unicode
         if q5 == "Unicode":
             score += 10
             results_details.append("✅ س 5: صحيح (Unicode)")
         else:
             results_details.append("❌ س 5: خطأ (الصحيح: Unicode)")
 
-        # 6. <class 'str'>
         if q6 == "<class 'str'>":
             score += 10
             results_details.append("✅ س 6: صحيح (<class 'str'>)")
         else:
             results_details.append("❌ س 6: خطأ (الصحيح: <class 'str'>)")
 
-        # 7. range(1, 10, 2) -> 1, 3, 5, 7, 9 (5 عناصر)
         if q7.strip() == "5":
             score += 10
             results_details.append("✅ س 7: صحيح (5 مرات)")
         else:
             results_details.append("❌ س 7: خطأ (الصحيح: 5)")
 
-        # 8. len()
         if q8 == "len()":
             score += 10
             results_details.append("✅ س 8: صحيح (len())")
         else:
             results_details.append("❌ س 8: خطأ (الصحيح: len())")
 
-        # 9. ORDER BY
         if q9.strip().upper() in ["ORDER BY", "ORDERBY"]:
             score += 10
             results_details.append("✅ س 9: صحيح (ORDER BY)")
         else:
             results_details.append("❌ س 9: خطأ (الصحيح: ORDER BY)")
 
-        # 10. -- (SQL Comment)
         if q10.strip() == "--":
             score += 10
             results_details.append("✅ س 10: صحيح (--)")
         else:
             results_details.append("❌ س 10: خطأ (الصحيح: --)")
 
-        # إرسال البيانات لجوجل شيت
+        # إرسال البيانات لجوجل شيت باستخدام data بدلاً من json لضمان استقبال الاسم بشكل صحيح
         try:
             payload = {
                 "name": full_name.strip(),
                 "score": score
             }
-            response = requests.post(WEB_APP_URL, json=payload)
+            response = requests.post(WEB_APP_URL, data=payload)
             success_sent = True
         except Exception as e:
             success_sent = False
@@ -231,6 +222,6 @@ if submit_btn:
             st.write(res)
 
         if success_sent:
-            st.success("✅ تم إرسال نتيجة اختبارك وعلامتك إلى لوحة تحكم المعلم بنجاح عبر رابط جوجل!")
+            st.success("✅ تم إرسال الاسم والنتيجة إلى لوحة تحكم المعلم بنجاح عبر رابط جوجل!")
         else:
             st.warning("⚠️ تم احتساب النتيجة، ولكن تعذر الإرسال التلقائي للرابط حالياً بسبب اتصال الشبكة.")
